@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import java.lang.reflect.Method;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterMethod;
@@ -43,8 +44,10 @@ public class Base_Class {
 	}
 	
 	@BeforeMethod
-	public void Setup() {
-		System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
+	public void Setup(Method method) {
+		
+		test=report.startTest(method.getName());
+				System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
 		System.setProperty("webdriver.gecko.driver", "geckodriver.exe"); // Firefox webdriver
 
 		driver = new ChromeDriver(); // to use Chrome, comment the below line
@@ -62,6 +65,7 @@ public class Base_Class {
 
 	@AfterMethod
 	public void Teardown() {
+		report.endTest(test);
 		driver.quit();
 	}
 
